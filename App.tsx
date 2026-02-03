@@ -401,4 +401,23 @@ const App: React.FC = () => {
       {/* Permanent Music Player */}
       <button 
         onClick={toggleMusic}
-        className="fixed top-4 right-4 z-50 p-3 bg-white/50 backdrop-blur-md rounded-full shadow-lg border border-white/50 hover:bg-white/80 transition-all text-
+        className="fixed top-4 right-4 z-50 p-3 bg-white/50 backdrop-blur-md rounded-full shadow-lg border border-white/50 hover:bg-white/80 transition-all text-2xl"
+      >
+        {isPlaying ? '🎵' : '🔇'}
+      </button>
+      <audio ref={audioRef} loop>
+        <source src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Gymnopedie_No_1.ogg" type="audio/ogg" />
+        <source src="/romantic-music.mp3" type="audio/mpeg" />
+      </audio>
+
+      {/* View Switcher */}
+      { !accepted ? renderProposal() : 
+        storyStep === 0 ? renderGallery() : 
+        (storyStep >= 1 && storyStep <= 4) ? renderStorySlide() : 
+        renderCalendar() 
+      }
+    </>
+  );
+};
+
+export default App;
