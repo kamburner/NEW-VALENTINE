@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { FloatingHearts } from './components/FloatingHearts';
 
-// --- NEW: In-file Photo Gallery Component ---
+// --- PHOTO GALLERY (Still shows your "Us" and "Baby Shower" pics on the main page) ---
 const PhotoGallery: React.FC = () => {
   const photos = [
     { src: "/us-selfie.JPG", caption: "Us ❤️" },
     { src: "/baby-shower.jpg", caption: "Mommy and Daddy" },
-    // You can add more here!
   ];
 
   return (
@@ -64,29 +63,30 @@ const NAUGHTY_ERRORS = [
   "Authorized personnel only (You) ❤️",
 ];
 
+// --- STORY SLIDES (Now TEXT ONLY - No Images) ---
 const POEM_SLIDES = [
   {
     text: "Roses are red,\nViolets are blue...",
     subtext: "(And this water tower is named after you! 💧)",
-    image: "/deep-river..JPG",
+    // Image removed
     bgColor: "bg-gradient-to-br from-cyan-100 to-blue-200"
   },
   {
     text: "I rocked your world once...",
     subtext: "😈",
+    // Image removed
     bgColor: "bg-gradient-to-br from-orange-100 to-amber-200"
   },
   {
     text: "...and we got a souvenir too!",
     subtext: "(The cutest souvenir ever)",
-    image: "/baby-face.JPG", 
-    isBaby: true,
+    // Image removed
     bgColor: "bg-gradient-to-br from-blue-50 to-indigo-100"
   },
   {
     text: "Let's do it again? 😉",
     subtext: "Reserve your date below! 👇",
-    // FIX: Image removed from here as requested
+    // Image removed
     bgColor: "bg-gradient-to-br from-purple-100 to-red-100"
   }
 ];
@@ -224,7 +224,6 @@ const App: React.FC = () => {
               transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
               zIndex: yesZIndex
             }}
-            // FIX: Changed 'animate-heartbeat' to 'animate-bounce' for more obvious animation
             className={`
               bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 
               text-white font-bold rounded-2xl shadow-xl shadow-green-200/50 px-12 py-6 leading-none 
@@ -262,7 +261,6 @@ const App: React.FC = () => {
         <p className="text-2xl text-pink-700 font-handwriting mb-4">
           (I knew you couldn't resist me)
         </p>
-        {/* FIX: Replaced missing component with the new in-file PhotoGallery */}
         <PhotoGallery />
         <button 
           onClick={advanceStory}
@@ -291,18 +289,6 @@ const App: React.FC = () => {
             
             {slide.subtext && (
               <p className="text-xl text-pink-600 font-bold mb-4 font-handwriting">{slide.subtext}</p>
-            )}
-
-            {slide.image && (
-              <div className="relative inline-block mt-4 w-full">
-                <div className="absolute inset-0 bg-pink-200 rounded-2xl transform rotate-3"></div>
-                <img 
-                  src={slide.image} 
-                  alt={slide.subtext || "Story Image"} 
-                  className={`relative z-10 object-cover rounded-2xl shadow-xl border-4 border-white mx-auto ${slide.isBaby ? 'w-64 h-64' : 'w-full max-h-[50vh]'}`}
-                />
-                {slide.isBaby && <div className="absolute -bottom-6 -right-6 text-5xl animate-bounce z-20">👶</div>}
-              </div>
             )}
             
             <div className="mt-8 text-sm text-gray-400 font-semibold uppercase tracking-widest flex items-center justify-center gap-2">
