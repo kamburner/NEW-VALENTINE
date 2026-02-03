@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { FloatingHearts } from './components/FloatingHearts';
 
-// --- NEW: In-file Photo Gallery Component ---
+// --- PHOTO GALLERY ---
 const PhotoGallery: React.FC = () => {
   const photos = [
     { src: "/us-selfie.JPG", caption: "Us ❤️" },
     { src: "/baby-shower.jpg", caption: "Mommy and Daddy" },
-    // You can add more here!
   ];
 
   return (
@@ -64,21 +63,26 @@ const NAUGHTY_ERRORS = [
   "Authorized personnel only (You) ❤️",
 ];
 
+// --- STORY SLIDES (Images Restored!) ---
 const POEM_SLIDES = [
   {
     text: "Roses are red,\nViolets are blue...",
     subtext: "(And this water tower is named after you! 💧)",
+    // RESTORED: The deep river photo (Double dot kept!)
     image: "/deep-river..JPG",
     bgColor: "bg-gradient-to-br from-cyan-100 to-blue-200"
   },
   {
     text: "I rocked your world once...",
     subtext: "😈",
+    // RESTORED: The selfie
+    image: "/us-selfie.JPG",
     bgColor: "bg-gradient-to-br from-orange-100 to-amber-200"
   },
   {
     text: "...and we got a souvenir too!",
     subtext: "(The cutest souvenir ever)",
+    // RESTORED: The baby face
     image: "/baby-face.JPG", 
     isBaby: true,
     bgColor: "bg-gradient-to-br from-blue-50 to-indigo-100"
@@ -86,7 +90,7 @@ const POEM_SLIDES = [
   {
     text: "Let's do it again? 😉",
     subtext: "Reserve your date below! 👇",
-    // FIX: Image removed from here as requested
+    // No image on the last slide (looks cleaner before calendar)
     bgColor: "bg-gradient-to-br from-purple-100 to-red-100"
   }
 ];
@@ -98,7 +102,7 @@ const App: React.FC = () => {
   const [noButtonPos, setNoButtonPos] = useState<{ top: string; left: string } | null>(null);
   
   // Story/Poem States
-  const [storyStep, setStoryStep] = useState(0); // 0=Intro/Gallery, 1-4=Poem Slides, 5=Calendar
+  const [storyStep, setStoryStep] = useState(0); 
   
   // Calendar States
   const [shakeDate, setShakeDate] = useState<number | null>(null);
@@ -183,7 +187,6 @@ const App: React.FC = () => {
     }
   };
 
-  // --- Story Flow Control ---
   const advanceStory = () => {
     setStoryStep(prev => prev + 1);
   };
@@ -216,6 +219,7 @@ const App: React.FC = () => {
         )}
         
         <div className="flex flex-col items-center gap-6 w-full relative min-h-[200px] justify-center">
+          {/* YES BUTTON: Animated with 'animate-bounce' so it moves around! */}
           <button
             onClick={handleYesClick}
             style={{ 
@@ -224,11 +228,10 @@ const App: React.FC = () => {
               transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
               zIndex: yesZIndex
             }}
-            // FIX: Changed 'animate-heartbeat' to 'animate-bounce' for more obvious animation
             className={`
               bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 
               text-white font-bold rounded-2xl shadow-xl shadow-green-200/50 px-12 py-6 leading-none 
-              ${noCount === 0 ? 'animate-bounce' : ''} whitespace-nowrap ring-4 ring-white/50 backdrop-blur-sm
+              animate-bounce whitespace-nowrap ring-4 ring-white/50 backdrop-blur-sm
             `}
           >
             Yes! ❤️
@@ -262,7 +265,6 @@ const App: React.FC = () => {
         <p className="text-2xl text-pink-700 font-handwriting mb-4">
           (I knew you couldn't resist me)
         </p>
-        {/* FIX: Replaced missing component with the new in-file PhotoGallery */}
         <PhotoGallery />
         <button 
           onClick={advanceStory}
@@ -280,10 +282,12 @@ const App: React.FC = () => {
     
     return (
       <div 
-        className={`min-h-screen ${slide.bgColor} flex flex-col items-center justify-center p-6 text-center relative w-full overflow-y-auto`}
+        key={storyStep} // KEY PROP: This forces the animation to replay on every slide!
+        className={`min-h-screen ${slide.bgColor} flex flex-col items-center justify-center p-6 text-center relative w-full overflow-y-auto animate-fade-in`}
         onClick={advanceStory}
       >
-        <div className="z-10 w-full max-w-md slide-in my-auto">
+        {/* Added 'animate-in' classes to make the card zoom/slide in */}
+        <div className="z-10 w-full max-w-md my-auto animate-in zoom-in fade-in slide-in-from-bottom-10 duration-700">
           <div className="glass-panel p-10 rounded-[2rem] shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-300 cursor-pointer">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 font-romantic leading-relaxed whitespace-pre-line mb-6">
               "{slide.text}"
@@ -322,8 +326,8 @@ const App: React.FC = () => {
   };
 
   const renderCalendar = () => (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 to-pink-100 flex flex-col items-center justify-center p-4 text-center relative w-full">
-      <div className="z-10 w-full max-w-md slide-in">
+    <div className="min-h-screen bg-gradient-to-b from-red-50 to-pink-100 flex flex-col items-center justify-center p-4 text-center relative w-full animate-fade-in">
+      <div className="z-10 w-full max-w-md animate-in zoom-in duration-500">
         <h2 className="text-5xl font-bold text-red-600 mb-6 font-romantic drop-shadow-sm">
           Reserve Your Date
         </h2>
