@@ -35,24 +35,26 @@ const NAUGHTY_ERRORS = [
   "Authorized personnel only (You) ❤️",
 ];
 
+// --- UPDATED IMAGE SECTION ---
 const POEM_SLIDES = [
   {
     text: "Roses are red,\nViolets are blue...",
     subtext: "(And this water tower is named after you! 💧)",
-    // Updated path: Removed dot, added slash
-    image: "https://drive.google.com/uc?export=view&id=1seMHR3dxrIgbI2KwFTat8arRyasM8T7M",
+    // FIX 1: Replaced Drive link with your actual file (Note the double dot!)
+    image: "/deep-river..JPG",
     bgColor: "bg-gradient-to-br from-cyan-100 to-blue-200"
   },
   {
     text: "I rocked your world once...",
     subtext: "😈",
-    // Image removed per request
+    // FIX 2: Added your selfie here
+    image: "/us-selfie.JPG",
     bgColor: "bg-gradient-to-br from-orange-100 to-amber-200"
   },
   {
     text: "...and we got a souvenir too!",
     subtext: "(The cutest souvenir ever)",
-    // Updated path: Removed dot, added slash
+    // FIX 3: This one was likely working, kept as is
     image: "/baby-face.JPG", 
     isBaby: true,
     bgColor: "bg-gradient-to-br from-blue-50 to-indigo-100"
@@ -60,7 +62,8 @@ const POEM_SLIDES = [
   {
     text: "Let's do it again? 😉",
     subtext: "Reserve your date below! 👇",
-    // Image removed per request
+    // FIX 4: Added the baby shower pic (or swap with another if you prefer)
+    image: "/baby-shower.jpg",
     bgColor: "bg-gradient-to-br from-purple-100 to-red-100"
   }
 ];
@@ -99,8 +102,6 @@ const App: React.FC = () => {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        // Optimistic update not always best for audio, but fine here
-        // We set playing true, try to play. If fails, we set false.
         await audioRef.current.play();
         setIsPlaying(true);
       }
@@ -125,7 +126,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (noCount > 0 && !accepted) {
-      // Slower movement interval (800ms) for better mobile UX
       const interval = setInterval(() => {
         if (Math.random() < 0.2) moveNoButton();
       }, 800);
@@ -135,7 +135,6 @@ const App: React.FC = () => {
 
   const handleYesClick = () => {
     setAccepted(true);
-    // Try to auto-play music on success if not already playing
     if (audioRef.current && !isPlaying) {
       setTimeout(() => {
         if(audioRef.current) {
@@ -153,7 +152,6 @@ const App: React.FC = () => {
       setDateBooked(true);
       setToastMessage(null);
     } else if (day === 12) {
-      // Anniversary Logic
       setShakeDate(day);
       setToastMessage("Happy Anniversary! 💍 (But the main event is the 14th...)");
       setTimeout(() => setShakeDate(null), 2000);
@@ -178,7 +176,7 @@ const App: React.FC = () => {
           <>
             <div className="w-full h-80 relative mb-4 group perspective-1000">
               <div className="absolute inset-0 bg-pink-500 rounded-3xl transform rotate-3 opacity-20 group-hover:rotate-6 transition-transform"></div>
-              {/* FIXED PATH: Removed dot, added slash */}
+              {/* FIXED PATH: Proposal Image */}
               <img 
                 src="/river-funny.jpg" 
                 alt="River being cute" 
@@ -273,7 +271,6 @@ const App: React.FC = () => {
               <p className="text-xl text-pink-600 font-bold mb-4 font-handwriting">{slide.subtext}</p>
             )}
 
-            {/* Only render image if it exists in the slide data */}
             {slide.image && (
               <div className="relative inline-block mt-4 w-full">
                 <div className="absolute inset-0 bg-pink-200 rounded-2xl transform rotate-3"></div>
@@ -388,7 +385,6 @@ const App: React.FC = () => {
       </button>
       <audio ref={audioRef} loop>
         <source src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Gymnopedie_No_1.ogg" type="audio/ogg" />
-        {/* Updated Music path too just in case! */}
         <source src="/romantic-music.mp3" type="audio/mpeg" />
       </audio>
 
