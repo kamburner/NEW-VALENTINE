@@ -39,7 +39,7 @@ const POEM_SLIDES = [
   {
     text: "Roses are red,\nViolets are blue...",
     subtext: "(And this water tower is named after you! 💧)",
-    // Using the direct Google Drive link provided
+    // Updated path: Removed dot, added slash
     image: "https://drive.google.com/uc?export=view&id=1seMHR3dxrIgbI2KwFTat8arRyasM8T7M",
     bgColor: "bg-gradient-to-br from-cyan-100 to-blue-200"
   },
@@ -52,7 +52,8 @@ const POEM_SLIDES = [
   {
     text: "...and we got a souvenir too!",
     subtext: "(The cutest souvenir ever)",
-    image: "./baby-face.jpg", 
+    // Updated path: Removed dot, added slash
+    image: "/baby-face.JPG", 
     isBaby: true,
     bgColor: "bg-gradient-to-br from-blue-50 to-indigo-100"
   },
@@ -177,8 +178,9 @@ const App: React.FC = () => {
           <>
             <div className="w-full h-80 relative mb-4 group perspective-1000">
               <div className="absolute inset-0 bg-pink-500 rounded-3xl transform rotate-3 opacity-20 group-hover:rotate-6 transition-transform"></div>
+              {/* FIXED PATH: Removed dot, added slash */}
               <img 
-                src="./river-funny.jpg" 
+                src="/river-funny.jpg" 
                 alt="River being cute" 
                 className="w-full h-full object-cover rounded-3xl shadow-2xl border-4 border-white transform transition-transform duration-500 group-hover:scale-105"
               />
@@ -386,7 +388,8 @@ const App: React.FC = () => {
       </button>
       <audio ref={audioRef} loop>
         <source src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Gymnopedie_No_1.ogg" type="audio/ogg" />
-        <source src="./romantic-music.mp3" type="audio/mpeg" />
+        {/* Updated Music path too just in case! */}
+        <source src="/romantic-music.mp3" type="audio/mpeg" />
       </audio>
 
       {/* View Switcher */}
