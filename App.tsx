@@ -1,6 +1,35 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { PhotoGallery } from './components/PhotoGallery';
 import { FloatingHearts } from './components/FloatingHearts';
+
+// --- NEW: In-file Photo Gallery Component ---
+const PhotoGallery: React.FC = () => {
+  const photos = [
+    { src: "/us-selfie.JPG", caption: "Us ❤️" },
+    { src: "/baby-shower.jpg", caption: "Mommy and Daddy" },
+    // You can add more here!
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl px-4 mt-8">
+      {photos.map((photo, index) => (
+        <div key={index} className="flex flex-col items-center">
+          <div className="w-full aspect-[4/3] relative group perspective-1000 mb-4">
+            <div className="absolute inset-0 bg-pink-200 rounded-3xl transform rotate-2 group-hover:rotate-4 transition-transform"></div>
+            <img
+              src={photo.src}
+              alt={photo.caption}
+              className="w-full h-full object-cover rounded-3xl shadow-2xl border-4 border-white transform transition-transform duration-500 group-hover:scale-105 z-10 relative"
+            />
+             <div className="absolute -top-4 -right-4 bg-white p-2 rounded-full shadow-lg text-2xl z-20">
+                📌
+              </div>
+          </div>
+          <p className="text-pink-700 font-handwriting text-3xl font-bold transform -rotate-2">{photo.caption}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 // Phrases to show when trying to click 'No'
 const NO_PHRASES = [
@@ -35,26 +64,21 @@ const NAUGHTY_ERRORS = [
   "Authorized personnel only (You) ❤️",
 ];
 
-// --- UPDATED IMAGE SECTION ---
 const POEM_SLIDES = [
   {
     text: "Roses are red,\nViolets are blue...",
     subtext: "(And this water tower is named after you! 💧)",
-    // FIX 1: Replaced Drive link with your actual file (Note the double dot!)
     image: "/deep-river..JPG",
     bgColor: "bg-gradient-to-br from-cyan-100 to-blue-200"
   },
   {
     text: "I rocked your world once...",
     subtext: "😈",
-    // FIX 2: Added your selfie here
-    image: "/us-selfie.JPG",
     bgColor: "bg-gradient-to-br from-orange-100 to-amber-200"
   },
   {
     text: "...and we got a souvenir too!",
     subtext: "(The cutest souvenir ever)",
-    // FIX 3: This one was likely working, kept as is
     image: "/baby-face.JPG", 
     isBaby: true,
     bgColor: "bg-gradient-to-br from-blue-50 to-indigo-100"
@@ -62,8 +86,7 @@ const POEM_SLIDES = [
   {
     text: "Let's do it again? 😉",
     subtext: "Reserve your date below! 👇",
-    // FIX 4: Added the baby shower pic (or swap with another if you prefer)
-    image: "/baby-shower.jpg",
+    // FIX: Image removed from here as requested
     bgColor: "bg-gradient-to-br from-purple-100 to-red-100"
   }
 ];
@@ -86,10 +109,8 @@ const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Yes button dynamics - OPTIMIZED FOR MOBILE
-  // Slower growth factor (0.2 instead of 1.5)
+  // Yes button dynamics
   const yesButtonScale = 1 + noCount * 0.2;
-  // Start bigger (30px), grow more reasonably
   const yesButtonFontSize = Math.min(30 + noCount * 5, 90); 
   const yesZIndex = noCount > 5 ? 100 : 20;
 
@@ -176,7 +197,6 @@ const App: React.FC = () => {
           <>
             <div className="w-full h-80 relative mb-4 group perspective-1000">
               <div className="absolute inset-0 bg-pink-500 rounded-3xl transform rotate-3 opacity-20 group-hover:rotate-6 transition-transform"></div>
-              {/* FIXED PATH: Proposal Image */}
               <img 
                 src="/river-funny.jpg" 
                 alt="River being cute" 
@@ -204,10 +224,11 @@ const App: React.FC = () => {
               transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
               zIndex: yesZIndex
             }}
+            // FIX: Changed 'animate-heartbeat' to 'animate-bounce' for more obvious animation
             className={`
               bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 
               text-white font-bold rounded-2xl shadow-xl shadow-green-200/50 px-12 py-6 leading-none 
-              ${noCount === 0 ? 'animate-heartbeat' : ''} whitespace-nowrap ring-4 ring-white/50 backdrop-blur-sm
+              ${noCount === 0 ? 'animate-bounce' : ''} whitespace-nowrap ring-4 ring-white/50 backdrop-blur-sm
             `}
           >
             Yes! ❤️
@@ -241,6 +262,7 @@ const App: React.FC = () => {
         <p className="text-2xl text-pink-700 font-handwriting mb-4">
           (I knew you couldn't resist me)
         </p>
+        {/* FIX: Replaced missing component with the new in-file PhotoGallery */}
         <PhotoGallery />
         <button 
           onClick={advanceStory}
@@ -379,23 +401,4 @@ const App: React.FC = () => {
       {/* Permanent Music Player */}
       <button 
         onClick={toggleMusic}
-        className="fixed top-4 right-4 z-50 p-3 bg-white/50 backdrop-blur-md rounded-full shadow-lg border border-white/50 hover:bg-white/80 transition-all text-2xl"
-      >
-        {isPlaying ? '🎵' : '🔇'}
-      </button>
-      <audio ref={audioRef} loop>
-        <source src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Gymnopedie_No_1.ogg" type="audio/ogg" />
-        <source src="/romantic-music.mp3" type="audio/mpeg" />
-      </audio>
-
-      {/* View Switcher */}
-      { !accepted ? renderProposal() : 
-        storyStep === 0 ? renderGallery() : 
-        (storyStep >= 1 && storyStep <= 4) ? renderStorySlide() : 
-        renderCalendar() 
-      }
-    </>
-  );
-};
-
-export default App;
+        className="fixed top-4 right-4 z-50 p-3 bg-white/50 backdrop-blur-md rounded-full shadow-lg border border-white/50 hover:bg-white/80 transition-all text-
